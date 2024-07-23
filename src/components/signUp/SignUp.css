@@ -1,0 +1,65 @@
+.container-fluid {
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+    border-radius: 15px;
+  }
+  
+  .card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent background for the card */
+  }
+  
+  .card-header {
+    border-bottom: none;
+    background-color: #673ab7; /* Vibrant primary color */
+    color: white;
+    border-radius: 15px 15px 0 0;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .card-body {
+    padding: 2rem;
+  }
+  
+  .form-label {
+    font-weight: 600;
+  }
+  
+  .form-control {
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent input background */
+  }
+  
+  .form-select {
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent select background */
+  }
+  
+  .input-group-text {
+    background-color: rgba(248, 249, 250, 0.8); /* Semi-transparent input group background */
+    border-radius: 10px 0 0 10px;
+  }
+  
+  .btn-primary {
+    background-color: #673ab7; /* Matching primary button color */
+    border-color: #673ab7;
+    border-radius: 10px;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .btn-primary:hover {
+    background-color: #5e35b1; /* Darker shade for hover effect */
+    border-color: #5e35b1;
+  }
+  
+  @media (max-width: 576px) {
+    .card-body {
+      padding: 1rem;
+    }
+  }
+  
