@@ -1,0 +1,52 @@
+/* Add Project Button Style */
+.btn-secondary {
+    background: linear-gradient(45deg, darkslategray, purple);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(45deg, purple, darkslategray);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn-secondary:focus {
+    outline: none;
+}
+/* Project Dashboard Styles */
+.custom-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.custom-card:hover {
+    transform: scale(1.05); /* Slightly enlarges the card */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adds shadow for a lifting effect */
+}
+
+/* Specific card styles (Active Projects, Completed Projects, etc.) */
+/* .custom-card.hover-card {
+    Add any specific styles here if needed
+} */
+
+/* Example of setting specific colors */
+.custom-card.active-projects {
+    background-color: #f0f8ff; /* Light blue for Active Projects */
+}
+
+.custom-card.completed-projects {
+    background-color: #f5f5dc; /* Beige for Completed Projects */
+}
+
+.custom-card.pending-tasks {
+    background-color: #ffebcd; /* Blanched Almond for Pending Tasks */
+}
+
+.custom-card.project-budget {
+    background-color: #e6e6fa; /* Lavender for Project Budget */
+}

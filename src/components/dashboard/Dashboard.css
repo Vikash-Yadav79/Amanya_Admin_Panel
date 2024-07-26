@@ -1,0 +1,41 @@
+.custom-sider {
+  background: #001529;
+}
+
+.profile-section {
+  padding: 16px;
+  text-align: center;
+}
+
+.logo {
+  width: 192px;
+  height: 123px;
+  border-radius: 50%;
+  margin-bottom: 8px;
+}
+
+.profile-name {
+  color: white;
+}
+
+.profile-role {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.custom-header {
+  background: #001529;
+  padding: 0 16px;
+}
+
+.site-layout-background {
+  background: #fff;
+}
+
+.emergency-contact {
+  color: white;
+  padding: 16px;
+  text-align: center;
+  font-size: 14px;
+  background: #001529;
+  /* margin-top: -100px; */
+}

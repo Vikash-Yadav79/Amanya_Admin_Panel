@@ -1,38 +1,91 @@
 import React, { useState } from "react";
 import "./SignUp.css";
+import api from "../api";
+
+const statesInIndia = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+  "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+  "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+  "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",102
+];
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+    first_name: "",
+    last_name: "",
+    age: "",
     gender: "",
+    employee_id: "",
+    email: "",
+    mobile_number: "",
+    marital_status: "",
+    qualification: "",
     designation: "",
-    bloodGroup: "",
+    blood_group: "",
     address: "",
-    country: "",
+    country: "India", // Default to India
     state: "",
     city: "",
-    postalCode: "",
-    profilePicture: "",
-    adharCardFront: "",
-    adharCardBack: "",
+    pincode: "",
     bio: "",
     username: "",
     password: "",
     confirmPassword: "",
     status: "active",
+    profilePicture: null,
+    adharCardFront: null,
+    adharCardBack: null,
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      setFormData({ ...formData, [name]: files[0] });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
+  
+    // Create FormData object to handle file uploads
+    const data = new FormData();
+    for (const key in formData) {
+      if (formData[key] !== null && formData[key] !== "") {
+        data.append(key, formData[key]);
+      }
+    }
+  
+    try {
+      const response = await api.post('create-admin', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log('Sign Up Successful:', response.data);
+      // Handle successful sign up, e.g., redirect to login page
+    } catch (error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        // console.error('Error response data:', error.response.data);
+        // console.error('Error response status:', error.response.status);
+        // console.error('Error response headers:', error.response.headers);
+        
+        // If the error response contains validation errors
+        if (error.response.data.errors) {
+          console.error('Validation errors:', error.response.data.errors);
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('Error request:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error message:', error.message);
+      }
+    }
   };
 
   return (
@@ -40,292 +93,96 @@ const SignUp = () => {
       <div className="row">
         <div className="col-12">
           <div className="card">
-            <div className="card-header">Admin Signup</div>
+            <div className="card-header">Admin SignUp</div>
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="row">
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a1">
-                        First Name <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="a1"
-                        placeholder="Enter First Name"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a2">
-                        Last Name <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="a2"
-                        placeholder="Enter Last Name"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a3">
-                        Email <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="email"
-                        className="form-control"
-                        id="a3"
-                        placeholder="Enter Email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a4">
-                        Phone <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="tel"
-                        className="form-control"
-                        id="a4"
-                        placeholder="Enter Phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a5">
-                        Gender
-                      </label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <i className="ri-user-2-line"></i>
-                        </span>
-                        <select
-                          className="form-select"
-                          id="a5"
-                          name="gender"
-                          value={formData.gender}
-                          onChange={handleChange}
-                        >
-                          <option value="0">Select</option>
-                          <option value="1">Male</option>
-                          <option value="2">Female</option>
-                          <option value="3">Other</option>
-                        </select>
+                  {/* Input Fields */}
+                  {[
+                    { label: "First Name", name: "first_name", type: "text", placeholder: "Enter First Name", required: true },
+                    { label: "Last Name", name: "last_name", type: "text", placeholder: "Enter Last Name", required: true },
+                    { label: "Email", name: "email", type: "email", placeholder: "Enter Email", required: true },
+                    { label: "Mobile Number", name: "mobile_number", type: "tel", placeholder: "Enter Mobile Number", required: true },
+                    { label: "Gender", name: "gender", type: "select", options: ["Select", "male", "female", "other"] },
+                    { label: "Designation", name: "designation", type: "select", options: ["Select", "1", "2", "3", "4"] },
+                    { label: "Blood Group", name: "blood_group", type: "select", options: ["Select", "1", "2", "3", "4"] },
+                    { label: "Address", name: "address", type: "text", placeholder: "Enter Address", required: true },
+                    { label: "Country", name: "country", type: "select", options: ["India",101] },
+                    { label: "State", name: "state", type: "select", options: statesInIndia },
+                    { label: "City", name: "city", type: "text", placeholder: "Enter City", required: true },
+                    { label: "Pincode", name: "pincode", type: "text", placeholder: "Enter Pincode", required: true },
+                    { label: "Age", name: "age", type: "text", placeholder: "Enter Age", required: true },
+                    { label: "Marital Status", name: "marital_status", type: "select", options: ["Select", "Single", "Married"] },
+                    { label: "Qualification", name: "qualification", type: "text", placeholder: "Enter Qualification", required: true },
+                    { label: "Employee ID", name: "employee_id", type: "text", placeholder: "Enter Employee ID", required: true },
+                  ].map(({ label, name, type, placeholder, options, required }, index) => (
+                    <div className="col-xxl-3 col-lg-4 col-sm-6" key={index}>
+                      <div className="mb-3">
+                        <label className="form-label" htmlFor={name}>
+                          {label} {required && <span className="text-danger">*</span>}
+                        </label>
+                        {type === "select" ? (
+                          <div className="input-group">
+                            <span className="input-group-text">
+                              <i className={`ri-${name}-line`}></i>
+                            </span>
+                            <select
+                              className="form-select"
+                              id={name}
+                              name={name}
+                              value={formData[name]}
+                              onChange={handleChange}
+                            >
+                              {options.map((option, i) => (
+                                <option value={option} key={i}>{option}</option>
+                              ))}
+                            </select>
+                          </div>
+                        ) : (
+                          <input
+                            type={type}
+                            className="form-control"
+                            id={name}
+                            placeholder={placeholder}
+                            name={name}
+                            value={formData[name]}
+                            onChange={handleChange}
+                            required={required}
+                          />
+                        )}
                       </div>
                     </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a6">
-                        Designation
-                      </label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <i className="ri-briefcase-4-line"></i>
-                        </span>
-                        <select
-                          className="form-select"
-                          id="a6"
-                          name="designation"
-                          value={formData.designation}
+                  ))}
+                  {/* File Upload Fields */}
+                  {[
+                    { label: "Profile Picture", name: "profilePicture" },
+                    { label: "Adhar Card Front", name: "adharCardFront" },
+                    { label: "Adhar Card Back", name: "adharCardBack" },
+                  ].map(({ label, name }, index) => (
+                    <div className="col-xxl-3 col-lg-4 col-sm-6" key={index}>
+                      <div className="mb-3">
+                        <label className="form-label" htmlFor={name}>
+                          {label}
+                        </label>
+                        <input
+                          type="file"
+                          className="form-control"
+                          id={name}
+                          name={name}
                           onChange={handleChange}
-                        >
-                          <option value="0">Select</option>
-                          <option value="1">Clerk</option>
-                          <option value="2">Manager</option>
-                          <option value="3">HR</option>
-                          <option value="4">Admin</option>
-                        </select>
+                        />
                       </div>
                     </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a10">
-                        Blood Group
-                      </label>
-                      <div className="input-group">
-                        <span className="input-group-text">
-                          <i className="ri-customer-service-2-line"></i>
-                        </span>
-                        <select
-                          className="form-select"
-                          id="a10"
-                          name="bloodGroup"
-                          value={formData.bloodGroup}
-                          onChange={handleChange}
-                          required
-                        >
-                          <option value="0">Select</option>
-                          <option value="1">A+</option>
-                          <option value="2">A-</option>
-                          <option value="3">B+</option>
-                          <option value="4">B-</option>
-                          <option value="5">AB+</option>
-                          <option value="6">AB-</option>
-                          <option value="7">O+</option>
-                          <option value="8">O-</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a11">
-                        Address
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="a11"
-                        placeholder="Enter Address"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a12">
-                        Country
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="a12"
-                        placeholder="Enter Country"
-                        name="country"
-                        value={formData.country}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a13">
-                        State
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="a13"
-                        placeholder="Enter State"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a14">
-                        City
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="a14"
-                        placeholder="Enter City"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a15">
-                        Postal Code
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="a15"
-                        placeholder="Enter Postal Code"
-                        name="postalCode"
-                        value={formData.postalCode}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a16">
-                        Profile Picture
-                      </label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        id="a16"
-                        name="profilePicture"
-                        onChange={(e) => handleChange(e, "profilePicture")}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a17">
-                        Adhar Card Front
-                      </label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        id="a17"
-                        name="adharCardFront"
-                        onChange={(e) => handleChange(e, "adharCardFront")}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a18">
-                        Adhar Card Back
-                      </label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        id="a18"
-                        name="adharCardBack"
-                        onChange={(e) => handleChange(e, "adharCardBack")}
-                      />
-                    </div>
-                  </div>
+                  ))}
+                  {/* Bio Field */}
                   <div className="col-12">
                     <div className="mb-3">
-                      <label className="form-label" htmlFor="a19">
+                      <label className="form-label" htmlFor="bio">
                         Bio
                       </label>
                       <textarea
                         className="form-control"
-                        id="a19"
+                        id="bio"
                         rows="3"
                         placeholder="Enter Bio"
                         name="bio"
@@ -334,60 +191,34 @@ const SignUp = () => {
                       ></textarea>
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a20">
-                        Username <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="a20"
-                        placeholder="Enter Username"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                      />
+                  {/* Username, Password, Confirm Password */}
+                  {[
+                    { label: "Username", name: "username", type: "text", placeholder: "Enter Username", required: true },
+                    { label: "Password", name: "password", type: "password", placeholder: "Enter Password", required: true },
+                    { label: "Confirm Password", name: "confirmPassword", type: "password", placeholder: "Confirm Password", required: true },
+                  ].map(({ label, name, type, placeholder, required }, index) => (
+                    <div className="col-xxl-3 col-lg-4 col-sm-6" key={index}>
+                      <div className="mb-3">
+                        <label className="form-label" htmlFor={name}>
+                          {label} {required && <span className="text-danger">*</span>}
+                        </label>
+                        <input
+                          type={type}
+                          className="form-control"
+                          id={name}
+                          placeholder={placeholder}
+                          name={name}
+                          value={formData[name]}
+                          onChange={handleChange}
+                          required={required}
+                        />
+                      </div>
                     </div>
-                  </div>
+                  ))}
+                  {/* Status Field */}
                   <div className="col-xxl-3 col-lg-4 col-sm-6">
                     <div className="mb-3">
-                      <label className="form-label" htmlFor="a21">
-                        Password <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="a21"
-                        placeholder="Enter Password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a22">
-                        Confirm Password <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="password"
-                        className="form-control"
-                        id="a22"
-                        placeholder="Confirm Password"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-lg-4 col-sm-6">
-                    <div className="mb-3">
-                      <label className="form-label" htmlFor="a23">
+                      <label className="form-label" htmlFor="status">
                         Status
                       </label>
                       <div className="input-group">
@@ -396,7 +227,7 @@ const SignUp = () => {
                         </span>
                         <select
                           className="form-select"
-                          id="a23"
+                          id="status"
                           name="status"
                           value={formData.status}
                           onChange={handleChange}
