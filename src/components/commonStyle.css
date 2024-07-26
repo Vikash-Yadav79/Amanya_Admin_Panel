@@ -1,0 +1,38 @@
+/* Common Button Styles */
+.common-btn {
+    background: linear-gradient(45deg, darkslategray, purple) !important;
+    border: none;
+    color: #fff;
+}
+
+.common-btn:hover, .common-btn:focus, .common-btn:active {
+    background: linear-gradient(45deg, darkslategray, purple) !important;
+    color: #fff;
+    border-color: darkslategray;
+}
+
+/* DataTable Styles */
+.p-datatable-customers .p-button {
+    border: none;
+    background: linear-gradient(45deg, darkslategray, purple) !important;
+    color: #fff;
+}
+
+.p-datatable-customers .p-datatable-header {
+    background: linear-gradient(45deg, darkslategray, purple) !important;
+    color: #fff;
+}
+
+/* Modal Header */
+.ant-modal-header {
+    background: linear-gradient(45deg, darkslategray, purple) !important;
+    color: #fff;
+}
+
+/* Additional Common Styles */
+.common-modal .ant-form-item-label > label {
+    color: #333;
+}
+.common-modal .ant-form-item-control-input {
+    background: #f5f5f5;
+}
