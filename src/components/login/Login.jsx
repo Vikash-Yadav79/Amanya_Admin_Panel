@@ -12,12 +12,13 @@ import {
   MDBIcon,
   MDBSpinner
 } from 'mdb-react-ui-kit';
-import './Login.css'; 
+import './Login.css';
 
 function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -31,9 +32,10 @@ function Login() {
     setLoading(true);
     setError('');
     try {
-      const response = await api.post('admin-login', {
-        username: username,
-        password: password
+      const response = await api.post('/admin-login', {
+        username,
+        password,
+        role
       });
       console.log(response.data);
       navigate('/Dashboard'); // Navigate to the dashboard on successful login
@@ -51,14 +53,30 @@ function Login() {
   };
 
   return (
-    <MDBContainer fluid className="bg-dark min-vh-100 d-flex align-items-center justify-content-center p-0">
+    <MDBContainer fluid className="login-bg">
       <MDBRow className="d-flex justify-content-center align-items-center w-100 m-0">
         <MDBCol col="12" md="8" lg="6" xl="4">
-          <MDBCard className="bg-light text-dark my-5 mx-auto" style={{ borderRadius: '1rem', width: '100%' }}>
-            <MDBCardBody className="p-5 d-flex flex-column align-items-center">
+          <MDBCard className="bg-light text-dark my-5 mx-auto container">
+            <MDBCardBody className="p-5 d-flex flex-column align-items-center auth-wrapper">
               <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
-              <p className="text-muted mb-5">Please enter your login and password!</p>
-              <form onSubmit={handleLogin} className="w-100">
+              <p className="text-muted mb-5">Please enter your login details!</p>
+              <form onSubmit={handleLogin} className="w-100 auth-box">
+                <div className="mb-4 w-100">
+                  <label htmlFor="role" className="form-label text-dark">Select a Role</label>
+                  <select 
+                    id="role" 
+                    className="select-role"
+                    value={role} 
+                    onChange={(e) => setRole(e.target.value)}
+                  >
+                    <option value="" disabled>Select Role</option>
+                    <option value="Super Admin">Super Admin</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Leads">Leads</option>
+                    <option value="Senior Sales Executive">Senior Sales Executive</option>
+                    <option value="Sales Executive">Sales Executive</option>
+                  </select>
+                </div>
                 <MDBInput
                   wrapperClass="mb-4 w-100"
                   labelClass="text-dark"

@@ -1,0 +1,105 @@
+.ticket-page-container {
+    padding: 24px;
+    background: #fff;
+  }
+  
+  .ticket-page-title {
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .ticket-page-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .add-ticket-button {
+    background-color: #1890ff; /* Primary color for buttons */
+    border: none;
+  }
+  
+  .search-input {
+    width: 300px;
+    border-radius: 5px;
+  }
+  
+  .summary-card {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .summary-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  .active-tickets {
+    background-color: #e6fffb;
+  }
+  
+  .completed-tickets {
+    background-color: #f6ffed;
+  }
+  
+  .pending-tickets {
+    background-color: #fff7e6;
+  }
+  
+  .card-number {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .ant-table {
+    margin-top: 20px;
+  }
+  
+  .ant-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .custom-card {
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .custom-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .status-select {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    background-color: #fff;
+  }
+  
+  .status-select .ant-select-selector {
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    background-color: #f5f5f5;
+    padding: 4px 11px;
+  }
+  
+  .status-dropdown {
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .status-dropdown .ant-select-item-option {
+    padding: 10px 16px;
+  }
+  
+  .status-dropdown .ant-select-item-option-selected {
+    background-color: #e6f7ff;
+    color: #1890ff;
+  }
+  
+  .status-dropdown .ant-select-item-option:hover {
+    background-color: #f5f5f5;
+  }
+  

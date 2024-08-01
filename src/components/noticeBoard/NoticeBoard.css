@@ -1,0 +1,29 @@
+.notice-board-container {
+    padding: 24px;
+    background-color: #f0f2f5;
+  }
+  
+  .notice-board-header {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 27px;
+    margin-bottom: 20px;
+
+  
+  }
+  
+  .add-notice-button {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+  }
+  
+  .add-notice-button:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
+  .search-input {
+    width: 300px;
+  }
+  

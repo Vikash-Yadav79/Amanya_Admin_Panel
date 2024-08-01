@@ -1,0 +1,58 @@
+/* Project Dashboard Styles */
+.custom-card {
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+    border-radius: 8px; /* Rounded corners for a modern look */
+    padding: 20px; /* Add padding inside the card */
+    text-align: center; /* Center the text inside the card */
+}
+
+.custom-card:hover {
+    transform: scale(1.05); /* Slightly enlarges the card */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Adds shadow for a lifting effect */
+    background-color: #e0f7fa; /* Light cyan background on hover for contrast */
+}
+
+/* Specific card styles (Active Projects, Completed Projects, etc.) */
+.custom-card.active-projects {
+    background-color: #d0f0c0; /* Light green background */
+    color: #333; /* Dark text color for contrast */
+}
+
+.custom-card.completed-projects {
+    background-color: #cce5ff; /* Light blue background */
+    color: #333; /* Dark text color for contrast */
+}
+
+.custom-card.pending-tasks {
+    background-color: #ffe5e5; /* Light pink background */
+    color: #333; /* Dark text color for contrast */
+}
+
+.custom-card.project-budget {
+    background-color: #e2e2e2; /* Light grey background */
+    color: #333; /* Dark text color for contrast */
+}
+
+/* Button Styles */
+.btn-primary {
+    background-color: #1890ff;
+    border-color: #1890ff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #40a9ff;
+    border-color: #40a9ff;
+}
+
+/* Modal Title Styles */
+.modal-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Custom Form Styles */
+.custom-form .ant-form-item {
+    margin-bottom: 16px;
+}

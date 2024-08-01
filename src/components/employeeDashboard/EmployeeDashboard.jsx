@@ -206,11 +206,7 @@ const EmployeeDashboard = () => {
                 <AntInput placeholder="Enter email" />
               </AntForm.Item>
             </Col>
-            <Col span={8}>
-              <AntForm.Item name="mobile_number" label="Mobile Number" rules={[{ required: true, message: 'Please enter mobile number!' }]}>
-                <AntInput placeholder="Enter mobile number" />
-              </AntForm.Item>
-            </Col>
+          
             <Col span={8}>
               <AntForm.Item name="marital_status" label="Marital Status" rules={[{ required: true, message: 'Please select marital status!' }]}>
                 <Select placeholder="Select marital status">
