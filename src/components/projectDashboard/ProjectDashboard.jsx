@@ -71,6 +71,7 @@ const ProjectDashboard = () => {
 
   return (
     <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
+       <Title level={2} className="ticket-page-title">Project Dashboard</Title>
       <Row gutter={[16, 16]}>
         <Col span={6}>
           <Card className="custom-card hover-card" title="Active Projects" bordered={false}>
@@ -92,7 +93,7 @@ const ProjectDashboard = () => {
         </Col>
         <Col span={6}>
           <Card className="custom-card hover-card" title="Project Budget" bordered={false}>
-            <Title level={2} className="card-number">$150,000</Title>
+            <Title level={2} className="card-number">Rs150,000</Title>
             <Text type="warning" className="card-percentage">+8% this month</Text>
           </Card>
         </Col>

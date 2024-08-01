@@ -1,0 +1,41 @@
+.site-layout-background {
+    background: #fff;
+  }
+  
+  .module-page-title {
+    text-align: center;
+  }
+  
+  .custom-card {
+    text-align: center;
+  }
+  
+  .card-number {
+    font-size: 2rem;
+  }
+  
+  .custom-form {
+    max-width: 800px;
+  }
+  
+  .modal-title {
+    text-align: center;
+  }
+  
+  .btn-secondary {
+    background-color: #1890ff;
+    color: #fff;
+    border: none;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #40a9ff;
+    color: #fff;
+    border: none;
+  }
+  
+  .hover-card:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s;
+  }
+  

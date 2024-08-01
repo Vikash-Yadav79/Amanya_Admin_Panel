@@ -1,4 +1,3 @@
-// src/components/dashboard/Dashboard.js
 import React, { useState } from 'react';
 import { Layout, Menu, Typography, Badge, Input, Row, Col } from 'antd';
 import {
@@ -17,10 +16,15 @@ import logo from '../../assets/company_Logo.jpeg';
 import EmployeeDashboard from '../employeeDashboard/EmployeeDashboard';
 import ProjectDashboard from '../projectDashboard/ProjectDashboard';
 import CustomerDashboard from '../customerDashboard/CustomerDashboard';
-import Users from '../users/Users';
-import Requirements from '../requirements/Requirements';
+import AttendenceDashboard from '../attendence/AttendenceDashboard';
+import ManagerDashboard from '../managerDashboard/ManagerDashboard';
 import NoticeBoard from '../noticeBoard/NoticeBoard';
 import './Dashboard.css';
+import Ticket from '../ticket/TicketPage';
+import Module from '../module/Module';
+import TeamLead from '../teamLeads/TeamLeads';
+import SeniorSalesExcutive from '../seniorSalesExcutive/SeniorSalesExcutive';
+import SalesExcutive from '../salesExcutive/SalesExcutive';
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
@@ -36,7 +40,7 @@ const Dashboard = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider width={250} className="custom-sider" style={{height:"440px"}}>
+      <Sider width={250} className="custom-sider" style={{height:"740px"}}>
         <div className="profile-section">
           <img src={logo} alt="Logo" className="logo" />
           <Title level={4} className="profile-name" style={{color:'white'}}>Rahul Singh</Title>
@@ -61,14 +65,29 @@ const Dashboard = () => {
           <Menu.Item key="/dashboard/customers" icon={<CustomerServiceOutlined />}>
             Customers Dashboard
           </Menu.Item>
-          <Menu.Item key="/dashboard/users" icon={<UserOutlined />}>
-            Users
+          <Menu.Item key="/dashboard/attendence" icon={<CustomerServiceOutlined />}>
+            Attendence Dashboard
           </Menu.Item>
-          <Menu.Item key="/dashboard/requirements" icon={<FileDoneOutlined />}>
-            Requirements
+          <Menu.Item key="/dashboard/manager" icon={<CustomerServiceOutlined />}>
+            Manager Dashboard
+          </Menu.Item>
+          <Menu.Item key="/dashboard/ticket" icon={<UserOutlined />}>
+            Ticket
+          </Menu.Item>
+          <Menu.Item key="/dashboard/module" icon={<FileDoneOutlined />}>
+           module
           </Menu.Item>
           <Menu.Item key="/dashboard/notices" icon={<FileDoneOutlined />}>
             Notice Board
+          </Menu.Item>
+          <Menu.Item key="/dashboard/teamlead" icon={<FileDoneOutlined />}>
+            Team Lead
+          </Menu.Item>
+          <Menu.Item key="/dashboard/seniorsales" icon={<FileDoneOutlined />}>
+          Senior Sales Excutive
+          </Menu.Item>
+          <Menu.Item key="/dashboard/salesexcutive" icon={<FileDoneOutlined />}>
+           Sales Excutive
           </Menu.Item>
         </Menu>
         <div className="emergency-contact">
@@ -101,9 +120,14 @@ const Dashboard = () => {
             <Route path="employees" element={<EmployeeDashboard />} />
             <Route path="project-dashboard" element={<ProjectDashboard />} />
             <Route path="customers" element={<CustomerDashboard />} />
-            <Route path="users" element={<Users />} />
-            <Route path="requirements" element={<Requirements />} />
+            <Route path="attendence" element={<AttendenceDashboard />} />
+            <Route path="manager" element={<ManagerDashboard />} />
+             <Route path="ticket" element={<Ticket />} />
+             <Route path="module" element={<Module />} /> 
             <Route path="notices" element={<NoticeBoard />} />
+            <Route path="teamlead" element={<TeamLead />} />
+            <Route path="seniorsales" element={<SeniorSalesExcutive />} />
+            <Route path="salesexcutive" element={<SalesExcutive />} />
           </Routes>
         </Content>
       </Layout>
