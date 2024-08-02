@@ -68,10 +68,7 @@ const Dashboard = () => {
           <Menu.Item key="/dashboard/attendence" icon={<CustomerServiceOutlined />}>
             Attendence Dashboard
           </Menu.Item>
-          <Menu.Item key="/dashboard/manager" icon={<CustomerServiceOutlined />}>
-            Manager Dashboard
-          </Menu.Item>
-          <Menu.Item key="/dashboard/ticket" icon={<UserOutlined />}>
+                   <Menu.Item key="/dashboard/ticket" icon={<UserOutlined />}>
             Ticket
           </Menu.Item>
           <Menu.Item key="/dashboard/module" icon={<FileDoneOutlined />}>
@@ -79,6 +76,9 @@ const Dashboard = () => {
           </Menu.Item>
           <Menu.Item key="/dashboard/notices" icon={<FileDoneOutlined />}>
             Notice Board
+          </Menu.Item>
+          <Menu.Item key="/dashboard/manager" icon={<CustomerServiceOutlined />}>
+            Manager Dashboard
           </Menu.Item>
           <Menu.Item key="/dashboard/teamlead" icon={<FileDoneOutlined />}>
             Team Lead

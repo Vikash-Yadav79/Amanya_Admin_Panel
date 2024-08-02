@@ -1,4 +1,4 @@
-/* Background styling */
+Background styling
 .login-bg {
   display: flex;
   justify-content: center;
@@ -165,4 +165,105 @@ body, html, #root {
 .MDBCard {
   margin-left: 0;
   margin-right: 0;
+}
+
+
+/* new login  */
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #FCFCFC;
+}
+
+.logo {
+  width: 300px;
+  height: 80px;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  max-width: 400px;
+  margin-bottom: 100px;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: #F1F1F1;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 7px;
+}
+
+.dropdown {
+  width: 100%;
+  padding: 10px;
+  background-color: #F1F1F1;
+  border-radius: 10px;
+  border: none;
+}
+
+.login-info {
+  border: none;
+  background: none;
+  color: #797979;
+  width: 100%;
+}
+
+.icon {
+  color: #A9A9A9;
+  font-size: 25px;
+}
+
+.login-btn {
+  background-color: #2a2a8a;
+  width: 100%;
+  padding: 16px;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #FCF6F6;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.or-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background-color: black;
+}
+
+.or-text {
+  margin: 0 10px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.sign-up-btn {
+  background-color: #F1F1F1;
+  width: 100%;
+  padding: 16px;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
 }

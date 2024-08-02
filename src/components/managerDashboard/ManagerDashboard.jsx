@@ -8,7 +8,7 @@ const { Title } = Typography;
 const { Option } = Select;
 
 const ManagerDashboard = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [managers, setManagers] = useState([]);
   const [searchText, setSearchText] = useState('');
@@ -20,7 +20,7 @@ const ManagerDashboard = () => {
 
   const fetchManagers = async () => {
     try {
-      const response = await api.get('get-all-managers');
+      const response = await api.get('get-all-manager');
       setManagers(response.data.managers);
     } catch (error) {
       message.error('Failed to fetch managers');
@@ -102,9 +102,10 @@ const ManagerDashboard = () => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'first_name',
+      key: 'first_name',
     },
+    
     {
       title: 'Email',
       dataIndex: 'email',
