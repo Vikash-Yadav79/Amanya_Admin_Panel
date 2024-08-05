@@ -1,22 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Row, Typography, Button, Modal, Form, Input, Table, Select, message } from 'antd';
-import { PlusOutlined, SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import api from '../api'; // Ensure this is the correct path
-import './ManagerDashboard.css';
+import { PlusOutlined, SearchOutlined, EditOutlined, DeleteOutlined, UserSwitchOutlined } from '@ant-design/icons';
+import api from '../api'; // Adjust the import path as needed
+import './ManagerDashboard.css'; // Adjust the import path as needed
 
 const { Title } = Typography;
 const { Option } = Select;
 
 const ManagerDashboard = () => {
-   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isPermissionModalVisible, setIsPermissionModalVisible] = useState(false);
   const [form] = Form.useForm();
+  const [permissionForm] = Form.useForm();
   const [managers, setManagers] = useState([]);
   const [searchText, setSearchText] = useState('');
-  const [editingManager, setEditingManager] = useState(null);
+  const [currentManager, setCurrentManager] = useState(null);
+  const [suparadminId, setSuparadminId] = useState('');
 
   useEffect(() => {
     fetchManagers();
+    getLoginData();
   }, []);
+  
+  const handlePermissionOk = async () => {
+    try {
+      const values = await permissionForm.validateFields();
+      await api.post('create-user-module', { ...values, manager_id: currentManager.id });
+      message.success('Permissions updated successfully');
+      setIsPermissionModalVisible(false);
+    } catch (error) {
+      message.error('Failed to update permissions');
+    }
+  };
+
+  const getLoginData = () => {
+    const loginData = localStorage.getItem('loginData');
+    if (loginData) {
+      const { suparadmin } = JSON.parse(loginData);
+      setSuparadminId(suparadmin.id);
+    } else {
+      console.error('No login data found');
+    }
+  };
 
   const fetchManagers = async () => {
     try {
@@ -27,50 +52,48 @@ const ManagerDashboard = () => {
     }
   };
 
-  const showModal = () => {
+  const handleAddManager = () => {
     setIsModalVisible(true);
-    setEditingManager(null);
+    setCurrentManager(null);
     form.resetFields();
   };
 
-  const handleOk = () => {
-    form.submit();
+  const handleAddPermission = (manager) => {
+    setCurrentManager(manager);
+    setIsPermissionModalVisible(true);
+    permissionForm.resetFields();
   };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleFormSubmit = async (values) => {
-    if (editingManager) {
-      await updateManager(editingManager.id, values);
-    } else {
-      await addManager(values);
-    }
-    fetchManagers();
-    setIsModalVisible(false);
-  };
-
-  const addManager = async (manager) => {
+  const handleModalOk = async () => {
     try {
-      await api.post('create-manager', manager);
-      message.success('Manager added successfully');
+      const values = await form.validateFields();
+      if (currentManager) {
+        await api.post('update-manager', values);
+        message.success('Manager updated successfully');
+      } else {
+        await api.post('create-manager', { ...values, suparadmin_id: suparadminId });
+        message.success('Manager added successfully');
+      }
+      setIsModalVisible(false);
+      fetchManagers();
     } catch (error) {
-      message.error('Failed to add manager');
+      if (error.response && error.response.data) {
+        console.error('Error details:', error.response.data);
+        const { message: errorMessage, errors } = error.response.data;
+        if (errorMessage) {
+          message.error(errorMessage);
+        }
+        if (errors) {
+          errors.forEach((err) => message.error(err));
+        }
+      } else {
+        console.error('Error details:', error.message);
+        message.error('Failed to update manager');
+      }
     }
   };
 
-  const updateManager = async (id, manager) => {
-    try {
-      await api.put(`update-manager/${id}`, manager);
-      message.success('Manager updated successfully');
-    } catch (error) {
-      message.error('Failed to update manager');
-      console.error('Update error:', error); 
-    }
-  };
-
-  const deleteManager = async (id) => {
+  const handleDelete = async (id) => {
     try {
       await api.delete(`delete-manager/${id}`);
       message.success('Manager deleted successfully');
@@ -82,7 +105,7 @@ const ManagerDashboard = () => {
 
   const handleEdit = (manager) => {
     setIsModalVisible(true);
-    setEditingManager(manager);
+    setCurrentManager(manager);
     form.setFieldsValue(manager);
   };
 
@@ -105,7 +128,6 @@ const ManagerDashboard = () => {
       dataIndex: 'first_name',
       key: 'first_name',
     },
-    
     {
       title: 'Email',
       dataIndex: 'email',
@@ -121,9 +143,7 @@ const ManagerDashboard = () => {
       dataIndex: 'status',
       key: 'status',
       render: (text) => (
-        <span>
-          {text === 'enable' ? 'Enabled' : 'Disabled'}
-        </span>
+        <span>{text === 'enable' ? 'Enabled' : 'Disabled'}</span>
       ),
     },
     {
@@ -131,8 +151,11 @@ const ManagerDashboard = () => {
       key: 'action',
       render: (text, record) => (
         <span>
+          <Button type="link" icon={<UserSwitchOutlined />} onClick={() => handleAddPermission(record)}>
+            Add Permission
+          </Button>
           <Button type="link" icon={<EditOutlined />} onClick={() => handleEdit(record)}>Edit</Button>
-          <Button type="link" icon={<DeleteOutlined />} danger onClick={() => deleteManager(record.id)}>Delete</Button>
+          <Button type="link" icon={<DeleteOutlined />} danger onClick={() => handleDelete(record.id)}>Delete</Button>
         </span>
       ),
     },
@@ -160,7 +183,7 @@ const ManagerDashboard = () => {
       </Row>
 
       <Row justify="space-between" align="middle" style={{ margin: '16px 0' }}>
-        <Button className="btn-secondary" icon={<PlusOutlined />} onClick={showModal}>
+        <Button className="btn-secondary" icon={<PlusOutlined />} onClick={handleAddManager}>
           Add Manager
         </Button>
         <Input
@@ -172,24 +195,34 @@ const ManagerDashboard = () => {
         />
       </Row>
 
-      <Table columns={columns} dataSource={filteredManagers} />
+      <Table columns={columns} dataSource={filteredManagers} rowKey="id" />
 
       <Modal
-        title={<div className="modal-title">Add Manager</div>}
+        title={currentManager ? 'Edit Manager' : 'Add Manager'}
         visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onOk={handleModalOk}
+        onCancel={() => setIsModalVisible(false)}
         width={800}
         footer={[
-          <Button key="cancel" onClick={handleCancel}>
+          <Button key="cancel" onClick={() => setIsModalVisible(false)}>
             Cancel
           </Button>,
-          <Button key="submit" type="primary" onClick={handleOk}>
+          <Button key="submit" type="primary" onClick={handleModalOk}>
             Submit
           </Button>
         ]}
       >
-        <Form form={form} onFinish={handleFormSubmit} layout="vertical" className="custom-form">
+        <Form form={form} layout="vertical">
+          <Form.Item name="suparadmin_id" initialValue={suparadminId} hidden>
+            <Input type="hidden" />
+          </Form.Item>
+
+          {currentManager && (
+            <Form.Item name="id" initialValue={currentManager.id} hidden>
+              <Input type="hidden" />
+            </Form.Item>
+          )}
+
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item name="first_name" label="First Name" rules={[{ required: true, message: 'Please enter the first name!' }]}>
@@ -204,6 +237,20 @@ const ManagerDashboard = () => {
           </Row>
           <Row gutter={24}>
             <Col span={12}>
+              <Form.Item name="email" label="Email" rules={[{ type: 'email', required: true, message: 'Please enter a valid email!' }]}>
+                <Input placeholder="Enter email" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item name="mobile_number" label="Mobile Number" rules={[{ required: true, message: 'Please enter the mobile number!' }]}>
+                <Input placeholder="Enter mobile number" />
+              </Form.Item>
+            </Col>
+          </Row>
+        
+         
+          <Row gutter={24}>
+            <Col span={12}>
               <Form.Item name="age" label="Age" rules={[{ required: true, message: 'Please enter the age!' }]}>
                 <Input placeholder="Enter age" />
               </Form.Item>
@@ -211,18 +258,6 @@ const ManagerDashboard = () => {
             <Col span={12}>
               <Form.Item name="gender" label="Gender" rules={[{ required: true, message: 'Please enter the gender!' }]}>
                 <Input placeholder="Enter gender" />
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={24}>
-            <Col span={12}>
-              <Form.Item name="email" label="Email" rules={[{ required: true, message: 'Please enter the email!' }]}>
-                <Input placeholder="Enter email" />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item name="mobile_number" label="Mobile Number" rules={[{ required: true, message: 'Please enter the mobile number!' }]}>
-                <Input placeholder="Enter mobile number" />
               </Form.Item>
             </Col>
           </Row>
@@ -263,12 +298,12 @@ const ManagerDashboard = () => {
             </Col>
           </Row>
           <Row gutter={24}>
-            <Col span={8}>
+            <Col span={12}>
               <Form.Item name="state_id" label="State ID" rules={[{ required: true, message: 'Please enter the state ID!' }]}>
                 <Input placeholder="Enter state ID" />
               </Form.Item>
             </Col>
-            <Col span={8}>
+            <Col span={12}>
               <Form.Item name="city" label="City" rules={[{ required: true, message: 'Please enter the city!' }]}>
                 <Input placeholder="Enter city" />
               </Form.Item>
@@ -298,6 +333,7 @@ const ManagerDashboard = () => {
               </Form.Item>
             </Col>
           </Row>
+
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item name="status" label="Status" rules={[{ required: true, message: 'Please select the status!' }]}>
@@ -308,6 +344,71 @@ const ManagerDashboard = () => {
               </Form.Item>
             </Col>
           </Row>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="Add Permission"
+        visible={isPermissionModalVisible}
+        onOk={handlePermissionOk}
+        onCancel={() => setIsPermissionModalVisible(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setIsPermissionModalVisible(false)}>
+            Cancel
+          </Button>,
+          <Button key="submit" type="primary" onClick={handlePermissionOk}>
+            Submit
+          </Button>
+        ]}
+      >
+        <Form form={permissionForm} layout="vertical">
+          <Form.Item name="module_id" label="Module Name" rules={[{ required: true, message: 'Please select a module!' }]}>
+            <Select placeholder="Select Module">
+              <Option value="manager">Manager</Option>
+              <Option value="sales">Sales</Option>
+              <Option value="hr">HR</Option>
+              <Option value="project">Project</Option>
+              <Option value="employee">Employee</Option>
+            </Select>
+          </Form.Item>
+
+          {/* <Form.Item name="read_permission" label="Read Permission" rules={[{ required: true, message: 'Please select a read permission!' }]}>
+            <Select placeholder="Select Permission">
+              <Option value="allow">Allow</Option>
+              <Option value="deny">Deny</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item name="write_permission" label="Write Permission" rules={[{ required: true, message: 'Please select a write permission!' }]}>
+            <Select placeholder="Select Permission">
+              <Option value="allow">Allow</Option>
+              <Option value="deny">Deny</Option>
+            </Select>
+          </Form.Item> */}
+          <Form.Item name="view_permission" label="View Permission" rules={[{ required: true, message: 'Please select an option!' }]}>
+            <Select placeholder="Select permission">
+              <Option value="yes">Yes</Option>
+              <Option value="no">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="edit_permission" label="Edit Permission" rules={[{ required: true, message: 'Please select an option!' }]}>
+            <Select placeholder="Select permission">
+              <Option value="yes">Yes</Option>
+              <Option value="no">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="delete_permission" label="Delete Permission" rules={[{ required: true, message: 'Please select an option!' }]}>
+            <Select placeholder="Select permission">
+              <Option value="yes">Yes</Option>
+              <Option value="no">No</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item name="status" label="Status" rules={[{ required: true, message: 'Please select a status!' }]}>
+            <Select placeholder="Select status">
+              <Option value="enable">Enable</Option>
+              <Option value="disable">Disable</Option>
+            </Select>
+          </Form.Item>
         </Form>
       </Modal>
     </div>

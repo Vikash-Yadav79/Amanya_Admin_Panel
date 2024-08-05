@@ -40,10 +40,10 @@ const Dashboard = () => {
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
-      <Sider width={250} className="custom-sider" style={{height:"740px"}}>
+      <Sider width={250} className="custom-sider" style={{ height: "740px" }}>
         <div className="profile-section">
           <img src={logo} alt="Logo" className="logo" />
-          <Title level={4} className="profile-name" style={{color:'white'}}>Rahul Singh</Title>
+          <Title level={4} className="profile-name" style={{ color: 'white' }}>Rahul Singh</Title>
           <Text className="profile-role">Dept Admin</Text>
         </div>
         <Menu
@@ -68,11 +68,11 @@ const Dashboard = () => {
           <Menu.Item key="/dashboard/attendence" icon={<CustomerServiceOutlined />}>
             Attendence Dashboard
           </Menu.Item>
-                   <Menu.Item key="/dashboard/ticket" icon={<UserOutlined />}>
+          <Menu.Item key="/dashboard/ticket" icon={<UserOutlined />}>
             Ticket
           </Menu.Item>
           <Menu.Item key="/dashboard/module" icon={<FileDoneOutlined />}>
-           module
+            module
           </Menu.Item>
           <Menu.Item key="/dashboard/notices" icon={<FileDoneOutlined />}>
             Notice Board
@@ -84,10 +84,10 @@ const Dashboard = () => {
             Team Lead
           </Menu.Item>
           <Menu.Item key="/dashboard/seniorsales" icon={<FileDoneOutlined />}>
-          Senior Sales Excutive
+            Senior Sales Excutive
           </Menu.Item>
           <Menu.Item key="/dashboard/salesexcutive" icon={<FileDoneOutlined />}>
-           Sales Excutive
+            Sales Excutive
           </Menu.Item>
         </Menu>
         <div className="emergency-contact">
@@ -122,8 +122,8 @@ const Dashboard = () => {
             <Route path="customers" element={<CustomerDashboard />} />
             <Route path="attendence" element={<AttendenceDashboard />} />
             <Route path="manager" element={<ManagerDashboard />} />
-             <Route path="ticket" element={<Ticket />} />
-             <Route path="module" element={<Module />} /> 
+            <Route path="ticket" element={<Ticket />} />
+            <Route path="module" element={<Module />} />
             <Route path="notices" element={<NoticeBoard />} />
             <Route path="teamlead" element={<TeamLead />} />
             <Route path="seniorsales" element={<SeniorSalesExcutive />} />
