@@ -18,7 +18,7 @@ function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
+  const [user_type, setuser_type] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -32,13 +32,13 @@ function Login() {
     setLoading(true);
     setError('');
     try {
-      const response = await api.post('/admin-login', {
+      const response = await api.post('app-login', {
         username,
         password,
-        role
+        user_type
       });
       console.log(response.data);
-      navigate('/Dashboard'); // Navigate to the dashboard on successful login
+      navigate('/Dashboard'); 
     } catch (error) {
       if (error.response) {
         console.error('Error response:', error.response.data);
@@ -62,14 +62,14 @@ function Login() {
               <p className="text-muted mb-5">Please enter your login details!</p>
               <form onSubmit={handleLogin} className="w-100 auth-box">
                 <div className="mb-4 w-100">
-                  <label htmlFor="role" className="form-label text-dark">Select a Role</label>
+                  {/* <label htmlFor="role" className="form-label text-dark"></label> */}
                   <select 
-                    id="role" 
+                    id="user_type" 
                     className="select-role"
-                    value={role} 
-                    onChange={(e) => setRole(e.target.value)}
+                    value={user_type} 
+                    onChange={(e) => setuser_type(e.target.value)}
                   >
-                    <option value="" disabled>Select Role</option>
+                    <option value="" disabled>Choose User Type</option>
                     <option value="Super Admin">Super Admin</option>
                     <option value="Manager">Manager</option>
                     <option value="Leads">Leads</option>
@@ -80,7 +80,8 @@ function Login() {
                 <MDBInput
                   wrapperClass="mb-4 w-100"
                   labelClass="text-dark"
-                  label="Email address"
+                  // label="Email address"
+                  placeholder='Username'
                   id="username"
                   type="text"
                   size="lg"
@@ -90,7 +91,8 @@ function Login() {
                 <MDBInput
                   wrapperClass="mb-4 w-100"
                   labelClass="text-dark"
-                  label="Password"
+                  placeholder='Password'
+                  // label="Password"
                   id="password"
                   type="password"
                   size="lg"
